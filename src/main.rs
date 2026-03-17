@@ -54,15 +54,27 @@ fn load_click_events(ui: &MainWindow) {
         }
     });
 
-    ui.on_settings_clicked(|| {
-        println!("Options pressed");
+    ui.on_account_clicked({
+        let ui_handle = ui_weak.clone();
+        move || {
+            let _ui = ui_handle.unwrap();
+            _ui.set_active_screen(1);
+        }
     });
 
-    ui.on_account_clicked(|| {
-        println!("Profile pressed");
+    ui.on_settings_clicked({
+        let ui_handle = ui_weak.clone();
+        move || {
+            let _ui = ui_handle.unwrap();
+            _ui.set_active_screen(2);
+        }
     });
 
-    ui.on_versions_clicked(|| {
-        println!("Versions pressed");
+    ui.on_versions_clicked({
+        let ui_handle = ui_weak.clone();
+        move || {
+            let _ui = ui_handle.unwrap();
+            _ui.set_active_screen(3);
+        }
     });
 }

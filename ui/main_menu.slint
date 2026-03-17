@@ -131,62 +131,143 @@ export component MainWindow inherits Window {
     callback account_clicked();
     callback launch_clicked();
 
-    VerticalLayout {
-        padding: 30px;
-        spacing: 40px;
-        alignment: start;
+    // 0: Main, 1: Account, 2: Settings, 3: Versions
+    in-out property <int> active-screen: 0;
 
-        HorizontalLayout {
-            alignment: center;
-            spacing: 10px;
+    Rectangle {
+        width: 100%;
+        height: 100%;
+        clip: true;
 
-            OptionsButton {
-                text: L10n.get("account_btn");
-                icon-source: @image-url("res/human.svg");
-                clicked => { root.account_clicked(); }
+        main_view := VerticalLayout {
+            padding: 30px;
+            spacing: 40px;
+            alignment: start;
+
+            x: root.active-screen == 1 ? parent.width : (root.active-screen == 3 ? -parent.width : 0);
+
+            y: root.active-screen == 2 ? parent.height : 0;
+
+            animate x, y { duration: 250ms; easing: ease-in-out; }
+
+            HorizontalLayout {
+                alignment: center;
+                spacing: 10px;
+                OptionsButton {
+                    text: L10n.get("account_btn");
+                    icon-source: @image-url("res/human.svg");
+                    clicked => { root.account_clicked(); }
+                }
+                OptionsButton {
+                    text: L10n.get("settings_btn");
+                    icon-source: @image-url("res/gear.svg");
+                    clicked => { root.settings_clicked(); }
+                }
+                OptionsButton {
+                    text: L10n.get("versions_btn");
+                    icon-source: @image-url("res/tree.svg");
+                    clicked => { root.versions_clicked(); }
+                }
             }
-            OptionsButton {
-                text: L10n.get("settings_btn");
-                icon-source: @image-url("res/gear.svg");
-                clicked => { root.settings_clicked(); }
+
+            HorizontalLayout {
+                alignment: center;
+                spacing: 30px;
+                Rectangle {
+                    width: 650px; height: 470px; background: #ccc; border-radius: 20px;
+                    Text { text: L10n.get("changes_field"); y: 10px; width: parent.width; horizontal-alignment: center; }
+                }
+                Rectangle {
+                    width: 250px; height: 470px; background: #ccc; border-radius: 20px;
+                    Text { text: L10n.get("commit_field"); y: 10px; width: parent.width; horizontal-alignment: center; }
+                }
             }
-            OptionsButton {
-                text: L10n.get("versions_btn");
-                icon-source: @image-url("res/tree.svg");
-                clicked => { root.versions_clicked(); }
+
+            VerticalLayout {
+                alignment: end;
+                padding-bottom: 20px;
+                HorizontalLayout {
+                    alignment: center;
+                    PlayButton {
+                        text: L10n.get("launch_btn");
+                        clicked => { root.launch_clicked(); }
+                    }
+                }
             }
         }
 
-        HorizontalLayout {
-            alignment: center;
-            spacing: 30px;
+        account_view := VerticalLayout {
+            x: root.active-screen == 1 ? 0 : -parent.width;
+            width: 100%; height: 100%;
+            animate x { duration: 250ms; easing: ease-in-out; }
 
-            Rectangle {
-                width: 650px;
-                height: 470px;
-                background: #ccc;
-                border-radius: 20px;
-                Text { text: L10n.get("changes_field"); y: 10px; width: parent.width; horizontal-alignment: center; }
+            alignment: center;
+            spacing: 20px;
+
+            Text {
+                text: "Account Screen";
+                color: white;
+                font-size: 30px;
+                horizontal-alignment: center;
             }
 
-            Rectangle {
-                width: 250px;
-                height: 470px;
-                background: #ccc;
-                border-radius: 20px;
-                Text { text: L10n.get("commit_field"); y: 10px; width: parent.width; horizontal-alignment: center; }
+            HorizontalLayout {
+                alignment: center;
+                Button {
+                    text: "Back";
+                    width: 100%;
+                    clicked => { root.active-screen = 0; }
+                }
             }
         }
-    }
 
-    VerticalLayout {
-        alignment: end;
-        padding-bottom: 20px;
-        HorizontalLayout {
+        settings_view := VerticalLayout {
+            y: root.active-screen == 2 ? 0 : -parent.height;
+            width: 100%; height: 100%;
+            animate y { duration: 250ms; easing: ease-in-out; }
+
             alignment: center;
-            PlayButton { 
-                text: L10n.get("launch_btn"); 
-                clicked => { root.launch_clicked(); }
+            spacing: 20px;
+
+            Text {
+                text: "Settings Screen";
+                color: white;
+                font-size: 30px;
+                horizontal-alignment: center;
+            }
+
+            HorizontalLayout {
+                alignment: center;
+                Button {
+                    text: "Back";
+                    width: 100%;
+                    clicked => { root.active-screen = 0; }
+                }
+            }
+        }
+
+        versions_view := VerticalLayout {
+            x: root.active-screen == 3 ? 0 : parent.width;
+            width: 100%; height: 100%;
+            animate x { duration: 250ms; easing: ease-in-out; }
+
+            alignment: center;
+            spacing: 20px;
+
+            Text {
+                text: "Versions Screen";
+                color: white;
+                font-size: 30px;
+                horizontal-alignment: center;
+            }
+
+            HorizontalLayout {
+                alignment: center;
+                Button {
+                    text: "Back";
+                    width: 100%;
+                    clicked => { root.active-screen = 0; }
+                }
             }
         }
     }
