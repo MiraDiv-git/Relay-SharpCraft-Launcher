@@ -1,4 +1,5 @@
 import { Button } from "std-widgets.slint";
+import "res/Retron2000.ttf";
 
 struct TranslationItem {
     key: string,
@@ -47,7 +48,7 @@ component OptionsButton {
             Text {
                 text: root.text;
                 color: black;
-                font-size: 16px;
+                font-size: 18px;
                 font-weight: 700;
                 vertical-alignment: center;
                 horizontal-alignment: center;
@@ -119,6 +120,7 @@ component PlayButton {
 }
 
 export component MainWindow inherits Window {
+    default-font-family: "Retron2000";
     width: 1080px;
     height: 720px;
     title: "Relay - SharpCraft Launcher";
