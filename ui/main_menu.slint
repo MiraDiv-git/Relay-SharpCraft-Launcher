@@ -18,7 +18,7 @@ component OptionsButton {
     height: 55px;
 
     state-item := Rectangle {
-        background: rgb(200,200,200);
+        background: touch.pressed ? rgb(253, 255, 153) : rgb(255, 255, 255);
 
         border-radius: self.height / 2;
 
@@ -73,15 +73,25 @@ component PlayButton {
     in property <string> text;
     callback clicked;
 
-    width: 930px;
+    width: 700px;
     height: 70px;
 
     state-item := Rectangle {
-        background: touch.pressed ? rgb(187, 187, 187) :
-                   (touch.has-hover ? rgba(204, 204, 204, 0.8) : rgba(217, 217, 217, 0.5));
-        border-radius: 5px;
+        background: touch.pressed ? rgb(138, 255, 152) : rgb(255, 255, 255);
+        border-radius: 15px;
 
         animate background { duration: 80ms; }
+
+        property <float> w-scale: 1.0;
+        property <float> h-scale: 1.0;
+
+        width: parent.width * self.w-scale;
+        height: parent.height * self.h-scale;
+
+        animate width, height {
+            duration: 150ms;
+            easing: ease-out-back;
+        }
 
         Text {
             text: root.text;
@@ -95,6 +105,17 @@ component PlayButton {
     touch := TouchArea {
         clicked => { root.clicked(); }
     }
+
+    states [
+            pressed when touch.pressed : {
+                state-item.w-scale: 0.8;
+                state-item.h-scale: 0.96;
+            }
+            hovered when touch.has-hover : {
+                state-item.w-scale: 1.33;
+                state-item.h-scale: 1;
+            }
+        ]
 }
 
 export component MainWindow inherits Window {
