@@ -126,6 +126,11 @@ export component MainWindow inherits Window {
     title: "Relay - SharpCraft Launcher";
     background: #2b2b2b;
 
+    callback versions_clicked();
+    callback settings_clicked();
+    callback account_clicked();
+    callback launch_clicked();
+
     VerticalLayout {
         padding: 30px;
         spacing: 40px;
@@ -138,14 +143,17 @@ export component MainWindow inherits Window {
             OptionsButton {
                 text: L10n.get("account_btn");
                 icon-source: @image-url("res/human.svg");
+                clicked => { root.account_clicked(); }
             }
             OptionsButton {
                 text: L10n.get("settings_btn");
                 icon-source: @image-url("res/gear.svg");
+                clicked => { root.settings_clicked(); }
             }
             OptionsButton {
                 text: L10n.get("versions_btn");
                 icon-source: @image-url("res/tree.svg");
+                clicked => { root.versions_clicked(); }
             }
         }
 
@@ -176,7 +184,10 @@ export component MainWindow inherits Window {
         padding-bottom: 20px;
         HorizontalLayout {
             alignment: center;
-            PlayButton { text: L10n.get("launch_btn"); }
+            PlayButton { 
+                text: L10n.get("launch_btn"); 
+                clicked => { root.launch_clicked(); }
+            }
         }
     }
 }

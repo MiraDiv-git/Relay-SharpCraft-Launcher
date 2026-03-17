@@ -6,7 +6,7 @@
 # Build for Linux
 ### On Linux:
 ```bash
-cargo run --package Relay-SharpCraft-Launcher --bin Relay-SharpCraft-Launcher
+cargo run --package Relay-SharpCraft-Launcher --bin Relay-SharpCraft-Launcher --release
 ```
 
 ### On Windows:
@@ -33,5 +33,5 @@ cargo build --target x86_64-unknown-linux-gnu
 
 ### On Windows:
 ```cmd
-cargo run --package Relay-SharpCraft-Launcher --bin Relay-SharpCraft-Launcher
+cargo run --package Relay-SharpCraft-Launcher --bin Relay-SharpCraft-Launcher --release
 ```

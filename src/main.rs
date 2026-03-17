@@ -13,7 +13,7 @@ fn main() {
             std::env::set_var("SLINT_BACKEND", "software");
         }
     }
-    
+
     let default_language = "en";
 
     let ui = MainWindow::new().unwrap();
@@ -28,6 +28,7 @@ fn main() {
     });
 
     load_embedded_locale(&translations, default_language);
+    load_click_events(&ui);
 
     ui.run().unwrap();
 }
@@ -40,4 +41,28 @@ fn load_embedded_locale(map_arc: &Arc<Mutex<HashMap<String, String>>>, lang: &st
             *map = json;
         }
     }
+}
+
+fn load_click_events(ui: &MainWindow) {
+    let ui_weak = ui.as_weak();
+
+    ui.on_launch_clicked({
+        let ui_handle = ui_weak.clone();
+        move || {
+            let _ui = ui_handle.unwrap();
+            println!("Launch pressed");
+        }
+    });
+
+    ui.on_settings_clicked(|| {
+        println!("Options pressed");
+    });
+
+    ui.on_account_clicked(|| {
+        println!("Profile pressed");
+    });
+
+    ui.on_versions_clicked(|| {
+        println!("Versions pressed");
+    });
 }
