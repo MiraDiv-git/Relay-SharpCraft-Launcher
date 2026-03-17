@@ -1,4 +1,5 @@
 import { Button } from "std-widgets.slint";
+import { CheckBox } from "std-widgets.slint";
 import "res/Retron2000.ttf";
 
 struct TranslationItem {
@@ -157,15 +158,63 @@ component ApplyButton {
     }
 
     states [
-            pressed when touch.pressed : {
-                state-item.w-scale: 0.8;
-                state-item.h-scale: 1;
+        pressed when touch.pressed : {
+            state-item.w-scale: 0.8;
+            state-item.h-scale: 1;
+        }
+        hovered when touch.has-hover : {
+            state-item.w-scale: 1.05;
+            state-item.h-scale: 1.05;
+        }
+    ]
+}
+
+component SettingsCheckBox {
+    in property <string> text;
+    in-out property <bool> checked;
+    callback toggled;
+
+    height: 32px;
+
+    HorizontalLayout {
+        spacing: 8px;
+        alignment: start;
+
+        Rectangle {
+            width: 32px;
+            height: 32px;
+            background: checked ? rgb(0, 160, 255) : transparent;
+            border-width: 2px;
+            border-color: #888;
+            border-radius: 6px;
+
+            Text {
+                text: "✔";
+                color: white;
+                font-size: 24px;
+                font-weight: 700;
+                visible: checked;
+                x: (parent.width - self.width) / 2;
+                y: (parent.height - self.height) / 2;
             }
-            hovered when touch.has-hover : {
-                state-item.w-scale: 1.05;
-                state-item.h-scale: 1.05;
+
+            TouchArea {
+                width: 100%;
+                height: 100%;
+                clicked => {
+                    root.checked = !root.checked;
+                    root.toggled();
+                }
             }
-        ]
+        }
+
+        Text {
+            text: root.text;
+            color: white;
+            font-size: 20px;
+            vertical-alignment: center;
+        }
+    }
 }
 
 export component MainWindow inherits Window {
@@ -275,32 +324,171 @@ export component MainWindow inherits Window {
             }
         }
 
-        settings_view := VerticalLayout {
+        settings_view := VerticalLayout
+        {
             y: root.active-screen == 2 ? 0 : -parent.height;
             width: 100%; height: 100%;
             padding-top: 20px;
+            padding-bottom: 20px;
             animate y { duration: 250ms; easing: ease-in-out; }
 
-            alignment: center;
-            spacing: 20px;
-
-            Text {
+            Text
+            {
                 text: L10n.get("settings_btn");
                 color: white;
                 font-size: 30px;
                 horizontal-alignment: center;
+                height: 50px;
             }
 
-            VerticalLayout {
-                alignment: end;
-                padding-bottom: 100px;
-                width: 100%; height: 100%;
-                HorizontalLayout {
+            VerticalLayout
+            {
+                spacing: 15px;
+                alignment: start;
+
+
+                // Window size
+                HorizontalLayout
+                {
                     alignment: center;
-                    ApplyButton {
-                        text: L10n.get("apply_btn");
-                        clicked => { root.active-screen = 0; }
+                    width: 100%;
+                    Rectangle
+                    {
+                        width: 80%;
+                        height: 60px;
+                        background: rgb(100, 100, 100);
+                        border-radius: 15px;
+
+                        Text
+                        {
+                            text: "Default window size:";
+                            color: white;
+                            font-size: 30px;
+                            x: 20px;
+                            y: (parent.height - self.height) / 2;
+                        }
+
+                        HorizontalLayout {
+                            height: 70%;
+                            alignment: end;
+                            spacing: 10px;
+                            padding-right: 20px;
+
+                            Rectangle {
+                                width: 80px;
+                                background: rgba(0, 0, 0, 0.5);
+                                border-radius: 5px;
+                                border-width: 1px;
+                                border-color: #666;
+
+                                TextInput {
+                                    text: "800";
+                                    width: 60px;
+                                    height: 40px;
+                                    color: #fff;
+                                    font-size: 18px;
+                                    horizontal-alignment: center;
+                                    vertical-alignment: center;
+                                    input-type: number;
+                                }
+                            }
+
+                            Text {
+                                text: "x";
+                                color: white;
+                                font-size: 24px;
+                                y: (parent.height - self.height) / 2;
+                            }
+
+                            Rectangle {
+                                width: 80px;
+                                background: rgba(0, 0, 0, 0.5);
+                                border-radius: 5px;
+                                border-width: 1px;
+                                border-color: #666;
+
+                                TextInput {
+                                    text: "600";
+                                    width: 60px;
+                                    height: 40px;
+                                    color: #fff;
+                                    font-size: 18px;
+                                    horizontal-alignment: center;
+                                    vertical-alignment: center;
+                                }
+                            }
+
+                            SettingsCheckBox {
+                                text: "Fullscreen";
+                                checked: true;
+                                y: 5px;
+                                toggled => {
+                                }
+                            }
+                        }
                     }
+                }
+
+                // Install path
+                HorizontalLayout
+                {
+                    alignment: center;
+                    width: 100%;
+                    Rectangle
+                    {
+                        width: 80%;
+                        height: 120px; // Увеличил высоту, чтобы влезло две строки
+                        background: rgb(100, 100, 100);
+                        border-radius: 15px;
+
+                        // Используем VerticalLayout как единственный контейнер внутри Rectangle
+                        VerticalLayout {
+                            padding: 15px;
+                            spacing: 10px;
+                            alignment: center;
+
+                            Text
+                            {
+                                text: "Installation directory:";
+                                color: white;
+                                font-size: 30px;
+                                horizontal-alignment: left;
+                            }
+
+                            Rectangle {
+                                background: rgba(0, 0, 0, 0.5);
+                                border-radius: 5px;
+                                border-width: 1px;
+                                border-color: #666;
+                                height: 40px;
+
+                                HorizontalLayout {
+                                    padding-left: 10px;
+                                    padding-right: 10px;
+                                    spacing: 10px;
+
+                                    TextInput {
+                                        text: "~/.SharpCraft/Versions";
+                                        height: 100%;
+                                        color: #fff;
+                                        font-size: 18px;
+                                        horizontal-alignment: left;
+                                        vertical-alignment: center;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            HorizontalLayout
+            {
+                alignment: center;
+                ApplyButton
+                {
+                    text: L10n.get("apply_btn");
+                    clicked => { root.active-screen = 0; }
                 }
             }
         }
