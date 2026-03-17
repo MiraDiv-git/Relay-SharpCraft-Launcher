@@ -1,0 +1,10 @@
+{
+  "account_btn": "Profile",
+  "settings_btn": "Settings",
+  "versions_btn": "Versions",
+
+  "changes_field": "Changelog",
+  "commit_field": "Commit history",
+
+  "launch_btn": "Launch"
+}

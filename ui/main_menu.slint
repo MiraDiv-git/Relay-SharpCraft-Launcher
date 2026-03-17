@@ -1,10 +1,12 @@
 import { Button } from "std-widgets.slint";
 
-global L10n {
-    in-out property <string> launch-btn: "Launch";
-    in-out property <string> settings-btn: "Settings";
-    in-out property <string> account-btn: "Account";
-    in-out property <string> versions-btn: "Versions";
+struct TranslationItem {
+    key: string,
+    value: string,
+}
+
+export global L10n {
+    pure callback get(string) -> string;
 }
 
 component OptionsButton {
@@ -12,7 +14,7 @@ component OptionsButton {
     in property <image> icon-source;
     callback clicked;
 
-    width: 150px;
+    width: 200px;
     height: 55px;
 
     state-item := Rectangle {
@@ -48,7 +50,7 @@ component OptionsButton {
                 font-size: 16px;
                 font-weight: 700;
                 vertical-alignment: center;
-                horizontal-alignment: right;
+                horizontal-alignment: center;
             }
         }
     }
@@ -111,15 +113,15 @@ export component MainWindow inherits Window {
             spacing: 10px;
 
             OptionsButton {
-                text: L10n.account-btn;
+                text: L10n.get("account_btn");
                 icon-source: @image-url("res/human.svg");
             }
             OptionsButton {
-                text: L10n.settings-btn;
+                text: L10n.get("settings_btn");
                 icon-source: @image-url("res/gear.svg");
             }
             OptionsButton {
-                text: L10n.versions-btn;
+                text: L10n.get("versions_btn");
                 icon-source: @image-url("res/tree.svg");
             }
         }
@@ -133,7 +135,7 @@ export component MainWindow inherits Window {
                 height: 470px;
                 background: #ccc;
                 border-radius: 20px;
-                Text { text: "Changelog"; y: 10px; width: parent.width; horizontal-alignment: center; }
+                Text { text: L10n.get("changes_field"); y: 10px; width: parent.width; horizontal-alignment: center; }
             }
 
             Rectangle {
@@ -141,7 +143,7 @@ export component MainWindow inherits Window {
                 height: 470px;
                 background: #ccc;
                 border-radius: 20px;
-                Text { text: "Commit history"; y: 10px; width: parent.width; horizontal-alignment: center; }
+                Text { text: L10n.get("commit_field"); y: 10px; width: parent.width; horizontal-alignment: center; }
             }
         }
     }
@@ -151,7 +153,7 @@ export component MainWindow inherits Window {
         padding-bottom: 20px;
         HorizontalLayout {
             alignment: center;
-            PlayButton { text: L10n.launch-btn; }
+            PlayButton { text: L10n.get("launch_btn"); }
         }
     }
 }
