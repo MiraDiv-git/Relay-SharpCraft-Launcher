@@ -1,0 +1,11 @@
+{
+  "account_btn": "Профиль",
+  "settings_btn": "Настройки",
+  "versions_btn": "Версии",
+
+  "changes_field": "Изменения",
+  "commit_field": "История коммитов",
+
+  "launch_btn": "Запустить",
+  "apply_btn": "Применить"
+}

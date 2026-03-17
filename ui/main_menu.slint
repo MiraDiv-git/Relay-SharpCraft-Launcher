@@ -119,6 +119,55 @@ component PlayButton {
         ]
 }
 
+component ApplyButton {
+    in property <string> text;
+    callback clicked;
+
+    width: 300px;
+    height: 70px;
+
+    state-item := Rectangle {
+        background: touch.pressed ? rgb(253, 255, 153) : rgb(255, 255, 255);
+        border-radius: 15px;
+
+        animate background { duration: 80ms; }
+
+        property <float> w-scale: 1.0;
+        property <float> h-scale: 1.0;
+
+        width: parent.width * self.w-scale;
+        height: parent.height * self.h-scale;
+
+        animate width, height {
+            duration: 150ms;
+            easing: ease-out-back;
+        }
+
+        Text {
+            text: root.text;
+            font-size: 36px;
+            color: black;
+            horizontal-alignment: center;
+            vertical-alignment: center;
+        }
+    }
+
+    touch := TouchArea {
+        clicked => { root.clicked(); }
+    }
+
+    states [
+            pressed when touch.pressed : {
+                state-item.w-scale: 0.8;
+                state-item.h-scale: 1;
+            }
+            hovered when touch.has-hover : {
+                state-item.w-scale: 1.05;
+                state-item.h-scale: 1.05;
+            }
+        ]
+}
+
 export component MainWindow inherits Window {
     default-font-family: "Retron2000";
     width: 1080px;
@@ -199,24 +248,29 @@ export component MainWindow inherits Window {
         account_view := VerticalLayout {
             x: root.active-screen == 1 ? 0 : -parent.width;
             width: 100%; height: 100%;
+            padding-top: 20px;
             animate x { duration: 250ms; easing: ease-in-out; }
 
             alignment: center;
             spacing: 20px;
 
             Text {
-                text: "Account Screen";
+                text: L10n.get("account_btn");
                 color: white;
                 font-size: 30px;
                 horizontal-alignment: center;
             }
 
-            HorizontalLayout {
-                alignment: center;
-                Button {
-                    text: "Back";
-                    width: 100%;
-                    clicked => { root.active-screen = 0; }
+            VerticalLayout {
+                alignment: end;
+                padding-bottom: 100px;
+                width: 100%; height: 100%;
+                HorizontalLayout {
+                    alignment: center;
+                    ApplyButton {
+                        text: L10n.get("apply_btn");
+                        clicked => { root.active-screen = 0; }
+                    }
                 }
             }
         }
@@ -224,24 +278,29 @@ export component MainWindow inherits Window {
         settings_view := VerticalLayout {
             y: root.active-screen == 2 ? 0 : -parent.height;
             width: 100%; height: 100%;
+            padding-top: 20px;
             animate y { duration: 250ms; easing: ease-in-out; }
 
             alignment: center;
             spacing: 20px;
 
             Text {
-                text: "Settings Screen";
+                text: L10n.get("settings_btn");
                 color: white;
                 font-size: 30px;
                 horizontal-alignment: center;
             }
 
-            HorizontalLayout {
-                alignment: center;
-                Button {
-                    text: "Back";
-                    width: 100%;
-                    clicked => { root.active-screen = 0; }
+            VerticalLayout {
+                alignment: end;
+                padding-bottom: 100px;
+                width: 100%; height: 100%;
+                HorizontalLayout {
+                    alignment: center;
+                    ApplyButton {
+                        text: L10n.get("apply_btn");
+                        clicked => { root.active-screen = 0; }
+                    }
                 }
             }
         }
@@ -249,24 +308,29 @@ export component MainWindow inherits Window {
         versions_view := VerticalLayout {
             x: root.active-screen == 3 ? 0 : parent.width;
             width: 100%; height: 100%;
+            padding-top: 20px;
             animate x { duration: 250ms; easing: ease-in-out; }
 
             alignment: center;
             spacing: 20px;
 
             Text {
-                text: "Versions Screen";
+                text: L10n.get("versions_btn");
                 color: white;
                 font-size: 30px;
                 horizontal-alignment: center;
             }
 
-            HorizontalLayout {
-                alignment: center;
-                Button {
-                    text: "Back";
-                    width: 100%;
-                    clicked => { root.active-screen = 0; }
+            VerticalLayout {
+                alignment: end;
+                padding-bottom: 100px;
+                width: 100%; height: 100%;
+                HorizontalLayout {
+                    alignment: center;
+                    ApplyButton {
+                        text: L10n.get("apply_btn");
+                        clicked => { root.active-screen = 0; }
+                    }
                 }
             }
         }

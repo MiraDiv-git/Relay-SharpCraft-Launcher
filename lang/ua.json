@@ -6,5 +6,6 @@
   "changes_field": "Список змін",
   "commit_field": "Історія комітів",
 
-  "launch_btn": "Запустити"
+  "launch_btn": "Запустити",
+  "apply_btn": "Назад"
 }

@@ -6,5 +6,6 @@
   "changes_field": "Changelog",
   "commit_field": "Commit history",
 
-  "launch_btn": "Launch"
+  "launch_btn": "Launch",
+  "apply_btn": "Apply"
 }
