@@ -1,0 +1,157 @@
+import { Button } from "std-widgets.slint";
+
+global L10n {
+    in-out property <string> launch-btn: "Launch";
+    in-out property <string> settings-btn: "Settings";
+    in-out property <string> account-btn: "Account";
+    in-out property <string> versions-btn: "Versions";
+}
+
+component OptionsButton {
+    in property <string> text;
+    in property <image> icon-source;
+    callback clicked;
+
+    width: 150px;
+    height: 55px;
+
+    state-item := Rectangle {
+        background: rgb(200,200,200);
+
+        border-radius: self.height / 2;
+
+        property <float> btn-scale: 1.0;
+        width: parent.width * btn-scale;
+        height: parent.height * btn-scale;
+
+        animate width, height {
+            duration: 150ms;
+            easing: ease-out-back;
+        }
+        animate background { duration: 100ms; }
+
+        HorizontalLayout {
+            padding: 10px;
+            spacing: 10px;
+            alignment: center;
+
+            Image {
+                source: root.icon-source;
+                width: 32px;
+                height: 32px;
+                image-fit: contain;
+            }
+
+            Text {
+                text: root.text;
+                color: black;
+                font-size: 16px;
+                font-weight: 700;
+                vertical-alignment: center;
+                horizontal-alignment: right;
+            }
+        }
+    }
+
+    touch := TouchArea {
+        clicked => { root.clicked(); }
+    }
+
+    states [
+        pressed when touch.pressed : {
+            state-item.btn-scale: 0.95;
+        }
+        hovered when touch.has-hover : {
+            state-item.btn-scale: 1.05;
+        }
+    ]
+}
+
+component PlayButton {
+    in property <string> text;
+    callback clicked;
+
+    width: 930px;
+    height: 70px;
+
+    state-item := Rectangle {
+        background: touch.pressed ? rgb(187, 187, 187) :
+                   (touch.has-hover ? rgba(204, 204, 204, 0.8) : rgba(217, 217, 217, 0.5));
+        border-radius: 5px;
+
+        animate background { duration: 80ms; }
+
+        Text {
+            text: root.text;
+            font-size: 36px;
+            color: black;
+            horizontal-alignment: center;
+            vertical-alignment: center;
+        }
+    }
+
+    touch := TouchArea {
+        clicked => { root.clicked(); }
+    }
+}
+
+export component MainWindow inherits Window {
+    width: 1080px;
+    height: 720px;
+    title: "Relay - SharpCraft Launcher";
+    background: #2b2b2b;
+
+    VerticalLayout {
+        padding: 30px;
+        spacing: 40px;
+        alignment: start;
+
+        HorizontalLayout {
+            alignment: center;
+            spacing: 10px;
+
+            OptionsButton {
+                text: L10n.account-btn;
+                icon-source: @image-url("res/human.svg");
+            }
+            OptionsButton {
+                text: L10n.settings-btn;
+                icon-source: @image-url("res/gear.svg");
+            }
+            OptionsButton {
+                text: L10n.versions-btn;
+                icon-source: @image-url("res/tree.svg");
+            }
+        }
+
+        HorizontalLayout {
+            alignment: center;
+            spacing: 30px;
+
+            Rectangle {
+                width: 650px;
+                height: 470px;
+                background: #ccc;
+                border-radius: 20px;
+                Text { text: "Changelog"; y: 10px; width: parent.width; horizontal-alignment: center; }
+            }
+
+            Rectangle {
+                width: 250px;
+                height: 470px;
+                background: #ccc;
+                border-radius: 20px;
+                Text { text: "Commit history"; y: 10px; width: parent.width; horizontal-alignment: center; }
+            }
+        }
+    }
+
+    VerticalLayout {
+        alignment: end;
+        padding-bottom: 20px;
+        HorizontalLayout {
+            alignment: center;
+            PlayButton { text: L10n.launch-btn; }
+        }
+    }
+}
